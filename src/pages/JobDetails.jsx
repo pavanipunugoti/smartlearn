@@ -66,7 +66,7 @@ const JobDetails = () => {
                             </div>
                         </div>
                     </div>
-                    <button className="btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1.1rem' }}>
+                    <button className="btn-primary" style={{ padding: '0.75rem 2rem', fontSize: '1.1rem' }} onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(job.company + " careers")}`, '_blank')}>
                         Apply Now
                     </button>
                 </div>
@@ -106,7 +106,7 @@ const JobDetails = () => {
             </div>
 
             <div style={{ marginTop: '3rem', textAlign: 'center' }}>
-                <button className="btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.2rem', width: '100%', maxWidth: '300px' }}>
+                <button className="btn-primary" style={{ padding: '1rem 3rem', fontSize: '1.2rem', width: '100%', maxWidth: '300px' }} onClick={() => window.open(`https://www.google.com/search?q=${encodeURIComponent(job.company + " careers")}`, '_blank')}>
                     Apply for this Job
                 </button>
             </div>

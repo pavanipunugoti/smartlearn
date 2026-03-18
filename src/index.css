@@ -1165,7 +1165,7 @@ body::before {
 
 .code-block code {
   font-family: 'Fira Code', 'Courier New', Courier, monospace;
-  color: #f8fafc;
+  color: var(--text-primary);
   font-size: 0.95rem;
 }
 
@@ -1315,4 +1315,153 @@ body::before {
 .nav-item:hover {
   color: var(--accent-primary);
   transform: scale(1.05);
+}
+
+/* ==== Skill Split Layout (HTML, CSS, JS, Node.js) ==== */
+.skill-split-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2.5rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+.skill-split-left {
+  position: sticky;
+  top: 90px;
+}
+
+.roadmap-img-wrapper {
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 0.75rem;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  transition: var(--transition);
+}
+
+.roadmap-img-wrapper:hover {
+  box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.18);
+  border-color: rgba(99, 102, 241, 0.35);
+}
+
+.roadmap-infographic-img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  border-radius: 14px;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.roadmap-img-wrapper:hover .roadmap-infographic-img {
+  transform: scale(1.02);
+}
+
+.skill-split-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skill-competencies-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 1.5rem 1.75rem;
+}
+
+.skill-competencies-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.skill-timeline-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-radius: var(--card-radius);
+  padding: 1.5rem 1.75rem;
+}
+
+.timeline-level-card {
+  background: var(--bg-primary);
+  padding: 1.2rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: 1.2rem;
+  position: relative;
+  transition: var(--transition);
+}
+
+.timeline-level-card:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-level-card:hover {
+  border-color: rgba(99, 102, 241, 0.3);
+  box-shadow: var(--shadow-md);
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 18px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 3px solid var(--bg-secondary);
+  z-index: 1;
+}
+
+.timeline-connector {
+  position: absolute;
+  left: -1.35rem;
+  top: 20px;
+  width: 1.35rem;
+  height: 2px;
+  background: var(--border-color);
+}
+
+/* ==== Related Courses Section ==== */
+.related-courses-section {
+  margin-top: 1rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.related-courses-section h2 {
+  position: relative;
+}
+
+.related-courses-section .courses-grid {
+  margin-top: 0.5rem;
+}
+
+.skill-icon.yellow {
+  color: #facc15;
+}
+
+.skill-icon.red {
+  color: #ef4444;
+}
+
+@media (max-width: 868px) {
+  .skill-split-layout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .skill-split-left {
+    position: relative;
+    top: auto;
+  }
+
+  .roadmap-img-wrapper {
+    padding: 0.5rem;
+  }
 }

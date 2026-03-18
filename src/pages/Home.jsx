@@ -5,7 +5,7 @@ import { courses } from '../data/courses';
 import CourseCard from '../components/CourseCard';
 import SearchBar from '../components/SearchBar';
 import FilterBar from '../components/FilterBar';
-import { Sparkles, Code, Database, Globe, BrainCircuit, LineChart, FileJson, PenTool, Terminal, Coffee } from 'lucide-react';
+import { Sparkles, Code, Database, Globe, BrainCircuit, LineChart, FileJson, PenTool, Terminal, Coffee, Layout, Palette, Server } from 'lucide-react';
 import learningImg from '../assets/leraning_img.jpeg';
 import aboutImg from '../assets/about_img.png';
 const Home = () => {
@@ -86,8 +86,6 @@ const Home = () => {
                 </div>
             </section>
 
-            <div className="divider" />
-
             {/* ABOUT SECTION */}
             <section id="about" className="home-section">
                 <div className="section-header text-center">
@@ -108,8 +106,6 @@ const Home = () => {
                     </div>
                 </div>
             </section>
-
-            <div className="divider" />
 
             {/* SKILLS SECTION */}
             <section id="skills" className="home-section">
@@ -169,10 +165,28 @@ const Home = () => {
                         <h3>SQL</h3>
                         <p>Design efficient schemas and write complex database queries.</p>
                     </div>
+                    <div className="skill-card clickable-card" onClick={() => navigate('/skill/html')}>
+                        <Layout size={32} className="skill-icon blue" />
+                        <h3>HTML</h3>
+                        <p>Learn the foundational markup language of the web.</p>
+                    </div>
+                    <div className="skill-card clickable-card" onClick={() => navigate('/skill/css')}>
+                        <Palette size={32} className="skill-icon purple" />
+                        <h3>CSS</h3>
+                        <p>Style modern responsive layouts and animations.</p>
+                    </div>
+                    <div className="skill-card clickable-card" onClick={() => navigate('/skill/javascript')}>
+                        <FileJson size={32} className="skill-icon yellow" />
+                        <h3>JavaScript</h3>
+                        <p>Build dynamic and interactive web experiences.</p>
+                    </div>
+                    <div className="skill-card clickable-card" onClick={() => navigate('/skill/nodejs')}>
+                        <Server size={32} className="skill-icon green" />
+                        <h3>Node.js</h3>
+                        <p>Run scalable backend services and APIs using JS.</p>
+                    </div>
                 </div>
             </section>
-
-            <div className="divider" />
 
             {/* COURSES SECTION */}
             <section id="courses" className="home-section courses-container">

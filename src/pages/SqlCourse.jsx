@@ -92,24 +92,36 @@ const SqlCourse = () => {
                         <h4 className="sub-heading">INSERT INTO</h4>
                         <div className="code-block">
                             <pre><code>
+                                -- Syntax{'\n'}
                                 INSERT INTO table_name (column1, column2, column3, ...){'\n'}
-                                VALUES (value1, value2, value3, ...);
+                                VALUES (value1, value2, value3, ...);{'\n\n'}
+                                -- Example{'\n'}
+                                INSERT INTO Customers (CustomerName, City, Country){'\n'}
+                                VALUES ('Cardinal', 'Stavanger', 'Norway');
                             </code></pre>
                         </div>
 
                         <h4 className="sub-heading mt-4">UPDATE</h4>
                         <div className="code-block">
                             <pre><code>
+                                -- Syntax{'\n'}
                                 UPDATE table_name{'\n'}
                                 SET column1 = value1, column2 = value2, ...{'\n'}
-                                WHERE condition;
+                                WHERE condition;{'\n\n'}
+                                -- Example{'\n'}
+                                UPDATE Customers{'\n'}
+                                SET ContactName = 'Alfred Schmidt', City = 'Frankfurt'{'\n'}
+                                WHERE CustomerID = 1;
                             </code></pre>
                         </div>
 
                         <h4 className="sub-heading mt-4">DELETE</h4>
                         <div className="code-block">
                             <pre><code>
-                                DELETE FROM table_name WHERE condition;
+                                -- Syntax{'\n'}
+                                DELETE FROM table_name WHERE condition;{'\n\n'}
+                                -- Example{'\n'}
+                                DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
                             </code></pre>
                         </div>
                     </section>

@@ -93,6 +93,58 @@ const Practice = () => {
             ],
             starterCode: 'const express = require("express");\nconst app = express();\n\napp.get("/users", (req, res) => {\n    // Implement endpoint\n});'
         },
+        {
+            id: 7,
+            title: 'Reverse String',
+            difficulty: 'Easy',
+            category: 'Strings',
+            completed: false,
+            description: 'Write a function that reverses a string. The input string is given as an array of characters s.\n\nYou must do this by modifying the input array in-place with O(1) extra memory.',
+            examples: [
+                { input: 's = ["h","e","l","l","o"]', output: '["o","l","l","e","h"]', explanation: '' },
+                { input: 's = ["H","a","n","n","a","h"]', output: '["h","a","n","n","a","H"]', explanation: '' }
+            ],
+            starterCode: 'function reverseString(s) {\n    // Write your code here\n    \n}'
+        },
+        {
+            id: 8,
+            title: 'Palindrome Number',
+            difficulty: 'Easy',
+            category: 'Math',
+            completed: false,
+            description: 'Given an integer x, return true if x is a palindrome, and false otherwise.',
+            examples: [
+                { input: 'x = 121', output: 'true', explanation: '121 reads as 121 from left to right and from right to left.' },
+                { input: 'x = -121', output: 'false', explanation: 'From left to right, it reads -121. From right to left, it becomes 121-.' }
+            ],
+            starterCode: 'function isPalindrome(x) {\n    // Write your code here\n    \n}'
+        },
+        {
+            id: 9,
+            title: 'Contains Duplicate',
+            difficulty: 'Easy',
+            category: 'Arrays',
+            completed: false,
+            description: 'Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.',
+            examples: [
+                { input: 'nums = [1,2,3,1]', output: 'true', explanation: '1 appears twice.' },
+                { input: 'nums = [1,2,3,4]', output: 'false', explanation: 'All elements are distinct.' }
+            ],
+            starterCode: 'function containsDuplicate(nums) {\n    // Write your code here\n    \n}'
+        },
+        {
+            id: 10,
+            title: 'Group Anagrams',
+            difficulty: 'Medium',
+            category: 'Strings',
+            completed: false,
+            description: 'Given an array of strings strs, group the anagrams together. You can return the answer in any order.',
+            examples: [
+                { input: 'strs = ["eat","tea","tan","ate","nat","bat"]', output: '[["bat"],["nat","tan"],["ate","eat","tea"]]', explanation: '' },
+                { input: 'strs = [""]', output: '[[""]]', explanation: '' }
+            ],
+            starterCode: 'function groupAnagrams(strs) {\n    // Write your code here\n    \n}'
+        },
     ];
 
     const startChallenge = (challenge) => {

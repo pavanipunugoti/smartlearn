@@ -1,11 +1,15 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Globe, Database, Cpu, BrainCircuit, Layout, BookOpen, Terminal, Coffee } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Globe, Database, Cpu, BrainCircuit, Layout, BookOpen, Terminal, Coffee, Palette, FileJson, Server, GraduationCap } from 'lucide-react';
 import { courses } from '../data/courses';
 import CourseCard from '../components/CourseCard';
 import frontendImg from '../assets/frontend.jpeg';
 import backendImg from '../assets/backend.jpeg';
+import htmlRoadmapImg from '../assets/html_roadmap.png';
+import cssRoadmapImg from '../assets/css_roadmap.png';
+import jsRoadmapImg from '../assets/js_roadmap.png';
+import nodejsRoadmapImg from '../assets/nodejs_roadmap.png';
 
 const skillsContent = {
     frontend: {
@@ -117,10 +121,56 @@ const skillsContent = {
             intermediate: ["Complex JOIN operations", "Subqueries & CTEs", "Data Modification", "Index Creation"],
             advanced: ["Window Functions", "Stored Procedures & Triggers", "Query Optimization", "Database Normalization"]
         }
+    },
+    html: {
+        title: "HTML Architecture",
+        description: "HTML is the standard markup language for documents designed to be displayed in a web browser. It defines the meaning and structure of web content.",
+        outcomes: ["Build semantic document structures", "Implement SEO best practices", "Embed media and SVGs", "Understand web accessibility"],
+        icon: Layout,
+        roadmap: {
+            beginner: ["HTML Syntax & Tags", "Text Formatting", "Links & Images", "Lists & Tables"],
+            intermediate: ["Semantic HTML5", "Forms & Inputs", "Media Elements", "Iframes"],
+            advanced: ["Web Accessibility (a11y)", "SEO Basics", "SVG Graphics", "Microdata & SEO"]
+        }
+    },
+    css: {
+        title: "CSS & Styling",
+        description: "Cascading Style Sheets (CSS) is a stylesheet language used to describe the presentation of a document written in HTML. It controls layout, colors, and typography.",
+        outcomes: ["Create responsive layouts", "Master Flexbox & Grid", "Build complex animations", "Write maintainable SCSS"],
+        icon: Palette,
+        roadmap: {
+            beginner: ["CSS Selectors & Specificity", "Box Model", "Colors & Typography", "Basic Positioning"],
+            intermediate: ["Flexbox Fundamentals", "CSS Grid Layout", "Responsive Media Queries", "Transforms & Transitions"],
+            advanced: ["CSS Animations & Keyframes", "SASS/SCSS Architecture", "CSS Variables", "Modern Frameworks (Tailwind)"]
+        }
+    },
+    javascript: {
+        title: "JavaScript Programming",
+        description: "JavaScript is the programming language of the Web. It is used to add interactivity, complex logic, and dynamic content to web applications.",
+        outcomes: ["Master modern ES6+ syntax", "Manipulate the DOM", "Handle asynchronous operations", "Understand closures & scopes"],
+        icon: FileJson,
+        roadmap: {
+            beginner: ["JS Variables & Data Types", "Functions & Scope", "Arrays & Objects", "DOM Manipulation"],
+            intermediate: ["ES6+ Features", "Promises & Async/Await", "Event Loop & Callbacks", "Fetch API & AJAX"],
+            advanced: ["Closures & Prototypes", "Design Patterns", "Modules & Tooling (Vite/Webpack)", "Testing (Jest)"]
+        }
+    },
+    nodejs: {
+        title: "Node.js Backend",
+        description: "Node.js is an open-source, cross-platform JavaScript runtime environment that executes JavaScript code outside a web browser, perfect for scalable servers.",
+        outcomes: ["Build REST APIs with Express", "Manage asynchronous I/O", "Perform database integration", "Implement authentication"],
+        icon: Server,
+        roadmap: {
+            beginner: ["Node.js Basics & NPM", "Core Modules (fs, path)", "Setting up Express.js", "Basic Routing"],
+            intermediate: ["Middleware & Error Handling", "REST API Architecture", "MongoDB & Mongoose", "JWT Authentication"],
+            advanced: ["WebSockets / Socket.io", "Microservices Concepts", "Performance Profiling", "Deployment & CI/CD"]
+        }
     }
 };
 
-const skillImages = {
+// Images used on the LEFT side of the split layout
+// Uses generated roadmap infographics where available, otherwise skill images
+const skillDisplayImages = {
     frontend: frontendImg,
     backend: backendImg,
     ai: "https://images.unsplash.com/photo-1620712943543-bcc4688e7485?auto=format&fit=crop&w=800&q=80",
@@ -130,20 +180,46 @@ const skillImages = {
     django: "https://images.unsplash.com/photo-1526379095098-d400fd0bf935?auto=format&fit=crop&w=800&q=80",
     python: "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?auto=format&fit=crop&w=800&q=80",
     java: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=800&q=80",
-    sql: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=800&q=80"
+    sql: "https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=800&q=80",
+    html: htmlRoadmapImg,
+    css: cssRoadmapImg,
+    javascript: jsRoadmapImg,
+    nodejs: nodejsRoadmapImg,
 };
 
 const SkillOverview = () => {
     const { name } = useParams();
     const navigate = useNavigate();
 
-    const skill = skillsContent[name.toLowerCase()];
+    let normalizedName = name.toLowerCase();
+    if (normalizedName === 'node.js') normalizedName = 'nodejs';
+    const skill = skillsContent[normalizedName];
 
-    // Find courses related to this skill based on tags or category roughly mapping
-    const relatedCourses = courses.filter(course =>
-        course.category.toLowerCase().includes(name.toLowerCase()) ||
-        course.tags.some(t => t.toLowerCase().includes(name.toLowerCase()) || t.toLowerCase() === name.replace("-", " "))
-    );
+    // Find courses related to this skill
+    const relatedCourses = courses.filter(course => {
+        const n = normalizedName;
+        const original = name.toLowerCase();
+        return course.tags.some(t => {
+            const tag = t.toLowerCase();
+            if (tag === n || tag === original) return true;
+            // Special matching
+            if (n === 'nodejs' && (tag === 'node.js' || tag === 'nodejs' || tag === 'express')) return true;
+            if (n === 'html' && (tag === 'html5' || tag === 'html')) return true;
+            if (n === 'css' && (tag === 'css3' || tag === 'sass' || tag === 'scss' || tag === 'css')) return true;
+            if (n === 'javascript' && (tag === 'javascript' || tag === 'js' || tag === 'es6')) return true;
+            if (n === 'frontend' && (tag === 'frontend' || tag === 'react' || tag === 'nextjs')) return true;
+            if (n === 'backend' && (tag === 'backend' || tag === 'api' || tag === 'deployment')) return true;
+            if (n === 'ai' && (tag === 'ai' || tag === 'deep learning' || tag === 'nlp' || tag === 'llm')) return true;
+            if (n === 'ml' && (tag === 'machine learning' || tag === 'data science')) return true;
+            if (n === 'data-analytics' && (tag === 'data analysis' || tag === 'data science' || tag === 'sql')) return true;
+            if (n === 'python' && tag === 'python') return true;
+            if (n === 'django' && (tag === 'django' || tag === 'python')) return true;
+            if (n === 'java' && tag === 'java') return true;
+            if (n === 'sql' && (tag === 'sql' || tag === 'mysql' || tag === 'database')) return true;
+            if (n === 'figma' && (tag === 'figma' || tag === 'design' || tag === 'ui' || tag === 'ux')) return true;
+            return false;
+        }) || course.category.toLowerCase().includes(original);
+    });
 
     if (!skill) {
         return (
@@ -155,6 +231,7 @@ const SkillOverview = () => {
     }
 
     const Icon = skill.icon;
+    const displayImage = skillDisplayImages[normalizedName] || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80";
 
     const pageVariants = {
         initial: { opacity: 0, x: 20 },
@@ -178,136 +255,126 @@ const SkillOverview = () => {
                 </button>
             </div>
 
-            <div className="course-hero">
-                <motion.div
-                    className="course-hero-content"
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.2 }}
-                >
-                    <div className="category-tag">Skill Overview</div>
-                    <h1 className="course-hero-title" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                        <Icon size={48} className="icon-blue" style={{ marginBottom: 0 }} />
-                        {skill.title}
-                    </h1>
-                    <p className="course-hero-description" style={{ fontSize: '1.15rem' }}>
-                        {skill.description}
-                    </p>
+            {/* Hero Title */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                style={{ marginBottom: '2.5rem' }}
+            >
+                <div className="category-tag">Skill Overview</div>
+                <h1 className="course-hero-title" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                    <Icon size={48} className="icon-blue" style={{ marginBottom: 0 }} />
+                    {skill.title}
+                </h1>
+                <p className="course-hero-description" style={{ fontSize: '1.15rem', marginBottom: 0 }}>
+                    {skill.description}
+                </p>
+            </motion.div>
 
-                    <div className="skill-image-wrapper" style={{ marginTop: '2.5rem' }}>
+            {/* Side-by-side: Left = Image, Right = Learning Timeline */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.35 }}
+                className="skill-split-layout"
+            >
+                {/* LEFT: Skill / Roadmap Image */}
+                <div className="skill-split-left">
+                    <div className="roadmap-img-wrapper">
                         <img
-                            src={skillImages[name.toLowerCase()] || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80"}
-                            alt={skill.title}
-                            style={{
-                                width: '100%',
-                                height: 'auto',
-                                maxHeight: '350px',
-                                objectFit: 'cover',
-                                borderRadius: '16px',
-                                boxShadow: 'var(--shadow-md)'
-                            }}
+                            src={displayImage}
+                            alt={`${skill.title} Learning Roadmap`}
+                            className="roadmap-infographic-img"
                         />
                     </div>
-                </motion.div>
+                </div>
 
-                {skill.roadmap && (
-                    <div className="course-hero-roadmap" style={{ position: 'relative', paddingLeft: '2.5rem' }}>
-                        <h3 style={{ marginBottom: '2rem' }}>Learning Timeline</h3>
-
-                        <div style={{ position: 'absolute', left: '0', top: '70px', bottom: '20px', width: '4px', background: 'var(--border-color)', borderRadius: '2px' }}></div>
-
-                        {['beginner', 'intermediate', 'advanced'].map((level, i) => (
-                            <motion.div
-                                key={level}
-                                initial={{ opacity: 0, x: 20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ delay: 0.3 + (i * 0.2), type: 'spring' }}
-                                style={{
-                                    background: 'var(--bg-primary)',
-                                    padding: '1.5rem',
-                                    borderRadius: '12px',
-                                    border: '1px solid var(--border-color)',
-                                    boxShadow: 'var(--shadow-md)',
-                                    marginBottom: i !== 2 ? '2rem' : '0',
-                                    position: 'relative'
-                                }}
-                            >
-                                <div style={{ position: 'absolute', left: '-2.5rem', top: '24px', width: '2.5rem', height: '4px', background: 'var(--border-color)' }}></div>
-
-                                <div style={{
-                                    position: 'absolute',
-                                    left: '-3rem',
-                                    top: '16px',
-                                    width: '20px',
-                                    height: '20px',
-                                    borderRadius: '50%',
-                                    background: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
-                                    border: '4px solid var(--bg-primary)'
-                                }}></div>
-
-                                <h4 style={{
-                                    color: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
-                                    textTransform: 'capitalize',
-                                    marginBottom: '1rem',
-                                    fontSize: '1.1rem',
-                                    marginTop: 0
-                                }}>{level} Level</h4>
-
-                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                    {skill.roadmap[level].map((item, idx) => (
-                                        <li key={idx} style={{
-                                            margin: '0.5rem 0',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            gap: '8px',
-                                            color: 'var(--text-secondary)',
-                                            fontSize: '0.9rem'
-                                        }}>
-                                            <div style={{ width: '6px', height: '6px', borderRadius: '50%', background: 'var(--text-secondary)' }}></div>
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </motion.div>
-                        ))}
+                {/* RIGHT: Key Competencies + Learning Timeline */}
+                <div className="skill-split-right">
+                    {/* Key Competencies */}
+                    <div className="skill-competencies-card">
+                        <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem', color: 'var(--text-primary)' }}>Key Competencies</h3>
+                        <div className="skill-competencies-list">
+                            {skill.outcomes.map((outcome, idx) => (
+                                <div key={idx} className="learning-item">
+                                    <CheckCircle2 size={18} className="check-icon" />
+                                    <span>{outcome}</span>
+                                </div>
+                            ))}
+                        </div>
                     </div>
-                )}
-            </div>
 
-            <div className="course-body">
-                <div className="course-main-info">
-                    <h2>Key Competencies</h2>
-                    <div className="learning-grid">
-                        {skill.outcomes.map((outcome, idx) => (
-                            <div key={idx} className="learning-item">
-                                <CheckCircle2 size={20} className="check-icon" />
-                                <span>{outcome}</span>
+                    {/* Learning Timeline */}
+                    {skill.roadmap && (
+                        <div className="skill-timeline-card">
+                            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.3rem', color: 'var(--text-primary)' }}>Learning Timeline</h3>
+                            <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+                                <div style={{ position: 'absolute', left: '0', top: '8px', bottom: '8px', width: '3px', background: 'linear-gradient(to bottom, #10b981, #3b82f6, #8b5cf6)', borderRadius: '2px' }}></div>
+                                
+                                {['beginner', 'intermediate', 'advanced'].map((level, i) => (
+                                    <motion.div
+                                        key={level}
+                                        initial={{ opacity: 0, x: 15 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.4 + (i * 0.12) }}
+                                        className="timeline-level-card"
+                                    >
+                                        <div className="timeline-dot" style={{
+                                            background: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
+                                        }}></div>
+                                        <div className="timeline-connector"></div>
+                                        <h4 style={{
+                                            color: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
+                                            textTransform: 'capitalize',
+                                            marginBottom: '0.75rem',
+                                            fontSize: '1rem',
+                                            marginTop: 0
+                                        }}>{level} Level</h4>
+                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                            {skill.roadmap[level].map((item, idx) => (
+                                                <li key={idx} style={{ margin: '0.4rem 0', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
+                                                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--text-secondary)', flexShrink: 0 }}></div>
+                                                    {item}
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </motion.div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </div>
+                    )}
                 </div>
-            </div>
+            </motion.div>
 
-            <div className="divider details-divider" />
-
-            <div className="recommendation-wrapper">
-                <div className="section-header">
-                    <h2>Related Courses</h2>
-                    <p>Courses matching {skill.title}</p>
+            {/* Related Courses Section — Below */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.7 }}
+            >
+                <div className="related-courses-section">
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.5rem' }}>
+                        <GraduationCap size={28} style={{ color: 'var(--accent-primary)' }} />
+                        <h2 style={{ margin: 0, fontSize: '1.8rem' }}>Related Courses</h2>
+                    </div>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.05rem' }}>
+                        Recommended courses to master {skill.title}
+                    </p>
+                    {relatedCourses.length > 0 ? (
+                        <div className="courses-grid">
+                            {relatedCourses.map((course, idx) => (
+                                <CourseCard key={course.id} course={course} index={idx} />
+                            ))}
+                        </div>
+                    ) : (
+                        <div className="empty-state">
+                            <p>No related courses found right now. Check back soon!</p>
+                            <button className="btn-primary" onClick={() => navigate('/')}>Browse All</button>
+                        </div>
+                    )}
                 </div>
-                {relatedCourses.length > 0 ? (
-                    <div className="courses-grid">
-                        {relatedCourses.map((course, idx) => (
-                            <CourseCard key={course.id} course={course} index={idx} />
-                        ))}
-                    </div>
-                ) : (
-                    <div className="empty-state">
-                        <p>No related courses found right now. Check back soon!</p>
-                        <button className="btn-primary" onClick={() => navigate('/')}>Browse All</button>
-                    </div>
-                )}
-            </div>
+            </motion.div>
         </motion.div>
     );
 };
