@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, CheckCircle2, Globe, Database, Cpu, BrainCircuit, Layout, BookOpen, Terminal, Coffee, Palette, FileJson, Server, GraduationCap } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Globe, Database, Cpu, BrainCircuit, Layout, BookOpen, Terminal, Coffee, Palette, FileJson, Server, GraduationCap, ChevronDown } from 'lucide-react';
 import { courses } from '../data/courses';
 import CourseCard from '../components/CourseCard';
 import frontendImg from '../assets/frontend.jpeg';
@@ -168,8 +168,6 @@ const skillsContent = {
     }
 };
 
-// Images used on the LEFT side of the split layout
-// Uses generated roadmap infographics where available, otherwise skill images
 const skillDisplayImages = {
     frontend: frontendImg,
     backend: backendImg,
@@ -202,7 +200,6 @@ const SkillOverview = () => {
         return course.tags.some(t => {
             const tag = t.toLowerCase();
             if (tag === n || tag === original) return true;
-            // Special matching
             if (n === 'nodejs' && (tag === 'node.js' || tag === 'nodejs' || tag === 'express')) return true;
             if (n === 'html' && (tag === 'html5' || tag === 'html')) return true;
             if (n === 'css' && (tag === 'css3' || tag === 'sass' || tag === 'scss' || tag === 'css')) return true;
@@ -233,6 +230,10 @@ const SkillOverview = () => {
     const Icon = skill.icon;
     const displayImage = skillDisplayImages[normalizedName] || "https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&w=800&q=80";
 
+    const scrollToCourses = () => {
+        document.getElementById('related-courses').scrollIntoView({ behavior: 'smooth' });
+    };
+
     const pageVariants = {
         initial: { opacity: 0, x: 20 },
         in: { opacity: 1, x: 0 },
@@ -246,119 +247,129 @@ const SkillOverview = () => {
             exit="out"
             variants={pageVariants}
             transition={{ duration: 0.5 }}
-            className="details-page"
+            className="skill-page-wrapper"
         >
-            <div className="details-header-wrapper">
-                <button className="back-btn" onClick={() => navigate(-1)}>
-                    <ArrowLeft size={20} />
-                    <span>Back</span>
-                </button>
-            </div>
-
-            {/* Hero Title */}
-            <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                style={{ marginBottom: '2.5rem' }}
-            >
-                <div className="category-tag">Skill Overview</div>
-                <h1 className="course-hero-title" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
-                    <Icon size={48} className="icon-blue" style={{ marginBottom: 0 }} />
-                    {skill.title}
-                </h1>
-                <p className="course-hero-description" style={{ fontSize: '1.15rem', marginBottom: 0 }}>
-                    {skill.description}
-                </p>
-            </motion.div>
-
-            {/* Side-by-side: Left = Image, Right = Learning Timeline */}
-            <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.35 }}
-                className="skill-split-layout"
-            >
-                {/* LEFT: Skill / Roadmap Image */}
-                <div className="skill-split-left">
-                    <div className="roadmap-img-wrapper">
-                        <img
-                            src={displayImage}
-                            alt={`${skill.title} Learning Roadmap`}
-                            className="roadmap-infographic-img"
-                        />
-                    </div>
-                </div>
-
-                {/* RIGHT: Key Competencies + Learning Timeline */}
-                <div className="skill-split-right">
-                    {/* Key Competencies */}
-                    <div className="skill-competencies-card">
-                        <h3 style={{ marginBottom: '1rem', fontSize: '1.3rem', color: 'var(--text-primary)' }}>Key Competencies</h3>
-                        <div className="skill-competencies-list">
-                            {skill.outcomes.map((outcome, idx) => (
-                                <div key={idx} className="learning-item">
-                                    <CheckCircle2 size={18} className="check-icon" />
-                                    <span>{outcome}</span>
-                                </div>
-                            ))}
-                        </div>
+            {/* ===== FIRST SCREEN: Roadmap with Image (fills viewport) ===== */}
+            <section className="skill-roadmap-screen">
+                <div className="skill-roadmap-inner">
+                    <div className="details-header-wrapper">
+                        <button className="back-btn" onClick={() => navigate(-1)}>
+                            <ArrowLeft size={20} />
+                            <span>Back</span>
+                        </button>
                     </div>
 
-                    {/* Learning Timeline */}
-                    {skill.roadmap && (
-                        <div className="skill-timeline-card">
-                            <h3 style={{ marginBottom: '1.5rem', fontSize: '1.3rem', color: 'var(--text-primary)' }}>Learning Timeline</h3>
-                            <div style={{ position: 'relative', paddingLeft: '2rem' }}>
-                                <div style={{ position: 'absolute', left: '0', top: '8px', bottom: '8px', width: '3px', background: 'linear-gradient(to bottom, #10b981, #3b82f6, #8b5cf6)', borderRadius: '2px' }}></div>
-                                
-                                {['beginner', 'intermediate', 'advanced'].map((level, i) => (
-                                    <motion.div
-                                        key={level}
-                                        initial={{ opacity: 0, x: 15 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: 0.4 + (i * 0.12) }}
-                                        className="timeline-level-card"
-                                    >
-                                        <div className="timeline-dot" style={{
-                                            background: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
-                                        }}></div>
-                                        <div className="timeline-connector"></div>
-                                        <h4 style={{
-                                            color: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
-                                            textTransform: 'capitalize',
-                                            marginBottom: '0.75rem',
-                                            fontSize: '1rem',
-                                            marginTop: 0
-                                        }}>{level} Level</h4>
-                                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                                            {skill.roadmap[level].map((item, idx) => (
-                                                <li key={idx} style={{ margin: '0.4rem 0', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.88rem' }}>
-                                                    <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--text-secondary)', flexShrink: 0 }}></div>
-                                                    {item}
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </motion.div>
-                                ))}
+                    {/* Hero Title */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+                        className="skill-hero-header"
+                    >
+                        <div className="category-tag">Skill Overview</div>
+                        <h1 className="course-hero-title" style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+                            <Icon size={42} className="icon-blue" style={{ marginBottom: 0 }} />
+                            {skill.title}
+                        </h1>
+                        <p className="course-hero-description" style={{ fontSize: '1.1rem', marginBottom: 0 }}>
+                            {skill.description}
+                        </p>
+                    </motion.div>
+
+                    {/* Side-by-side: Left = Image, Right = Timeline */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 40 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.35 }}
+                        className="skill-split-layout"
+                    >
+                        {/* LEFT: Image */}
+                        <div className="skill-split-left">
+                            <div className="roadmap-img-wrapper">
+                                <img
+                                    src={displayImage}
+                                    alt={`${skill.title} Learning Roadmap`}
+                                    className="roadmap-infographic-img"
+                                />
                             </div>
                         </div>
-                    )}
-                </div>
-            </motion.div>
 
-            {/* Related Courses Section — Below */}
-            <motion.div
-                initial={{ opacity: 0, y: 40 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.7 }}
-            >
-                <div className="related-courses-section">
+                        {/* RIGHT: Learning Timeline */}
+                        <div className="skill-split-right">
+                            {skill.roadmap && (
+                                <div className="skill-timeline-card">
+                                    <h3 style={{ marginBottom: '1.2rem', fontSize: '1.2rem', color: 'var(--text-primary)' }}>Learning Timeline</h3>
+                                    <div style={{ position: 'relative', paddingLeft: '2rem' }}>
+                                        <div style={{ position: 'absolute', left: '0', top: '8px', bottom: '8px', width: '3px', background: 'linear-gradient(to bottom, #10b981, #3b82f6, #8b5cf6)', borderRadius: '2px' }}></div>
+                                        
+                                        {['beginner', 'intermediate', 'advanced'].map((level, i) => (
+                                            <motion.div
+                                                key={level}
+                                                initial={{ opacity: 0, x: 15 }}
+                                                animate={{ opacity: 1, x: 0 }}
+                                                transition={{ delay: 0.4 + (i * 0.12) }}
+                                                className="timeline-level-card"
+                                            >
+                                                <div className="timeline-dot" style={{
+                                                    background: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
+                                                }}></div>
+                                                <div className="timeline-connector"></div>
+                                                <h4 style={{
+                                                    color: level === 'beginner' ? '#10b981' : level === 'intermediate' ? '#3b82f6' : '#8b5cf6',
+                                                    textTransform: 'capitalize',
+                                                    marginBottom: '0.6rem',
+                                                    fontSize: '0.95rem',
+                                                    marginTop: 0
+                                                }}>{level} Level</h4>
+                                                <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                                                    {skill.roadmap[level].map((item, idx) => (
+                                                        <li key={idx} style={{ margin: '0.35rem 0', display: 'flex', alignItems: 'center', gap: '8px', color: 'var(--text-secondary)', fontSize: '0.85rem' }}>
+                                                            <div style={{ width: '5px', height: '5px', borderRadius: '50%', background: 'var(--text-secondary)', flexShrink: 0 }}></div>
+                                                            {item}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </motion.div>
+                                        ))}
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </motion.div>
+
+                    {/* Scroll Down Indicator */}
+                    <motion.div
+                        className="scroll-indicator"
+                        onClick={scrollToCourses}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8 }}
+                    >
+                        <span>Swipe down for related courses</span>
+                        <motion.div
+                            animate={{ y: [0, 8, 0] }}
+                            transition={{ repeat: Infinity, duration: 1.5 }}
+                        >
+                            <ChevronDown size={24} />
+                        </motion.div>
+                    </motion.div>
+                </div>
+            </section>
+
+            {/* ===== SECOND SCREEN: Related Courses (appears on scroll) ===== */}
+            <section id="related-courses" className="skill-courses-screen">
+                <motion.div
+                    initial={{ opacity: 0, y: 50 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true, amount: 0.2 }}
+                    transition={{ duration: 0.6 }}
+                    className="skill-courses-inner"
+                >
                     <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '0.5rem' }}>
-                        <GraduationCap size={28} style={{ color: 'var(--accent-primary)' }} />
-                        <h2 style={{ margin: 0, fontSize: '1.8rem' }}>Related Courses</h2>
+                        <GraduationCap size={32} style={{ color: 'var(--accent-primary)' }} />
+                        <h2 style={{ margin: 0, fontSize: '2rem' }}>Related Courses</h2>
                     </div>
-                    <p style={{ color: 'var(--text-secondary)', marginBottom: '2rem', fontSize: '1.05rem' }}>
+                    <p style={{ color: 'var(--text-secondary)', marginBottom: '2.5rem', fontSize: '1.1rem' }}>
                         Recommended courses to master {skill.title}
                     </p>
                     {relatedCourses.length > 0 ? (
@@ -373,8 +384,8 @@ const SkillOverview = () => {
                             <button className="btn-primary" onClick={() => navigate('/')}>Browse All</button>
                         </div>
                     )}
-                </div>
-            </motion.div>
+                </motion.div>
+            </section>
         </motion.div>
     );
 };

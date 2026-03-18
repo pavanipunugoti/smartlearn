@@ -1317,18 +1317,54 @@ body::before {
   transform: scale(1.05);
 }
 
-/* ==== Skill Split Layout (HTML, CSS, JS, Node.js) ==== */
+/* ==== Skill Page Two-Screen Layout ==== */
+.skill-page-wrapper {
+  scroll-snap-type: y proximity;
+  overflow-y: auto;
+}
+
+/* FIRST SCREEN: Roadmap fills the viewport */
+.skill-roadmap-screen {
+  min-height: calc(100vh - 70px);
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem 2rem 0;
+  max-width: 1200px;
+  margin: 0 auto;
+  scroll-snap-align: start;
+}
+
+.skill-roadmap-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-hero-header {
+  margin-bottom: 1.5rem;
+}
+
+.skill-hero-header .course-hero-title {
+  font-size: 2.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.skill-hero-header .course-hero-description {
+  margin-bottom: 0;
+}
+
+/* Side-by-side split */
 .skill-split-layout {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
   align-items: start;
-  margin-bottom: 3rem;
+  flex: 1;
 }
 
 .skill-split-left {
   position: sticky;
-  top: 90px;
+  top: 80px;
 }
 
 .roadmap-img-wrapper {
@@ -1367,19 +1403,6 @@ body::before {
   gap: 1.5rem;
 }
 
-.skill-competencies-card {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--card-radius);
-  padding: 1.5rem 1.75rem;
-}
-
-.skill-competencies-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
-
 .skill-timeline-card {
   background: var(--bg-secondary);
   border: 1px solid var(--border-color);
@@ -1389,11 +1412,11 @@ body::before {
 
 .timeline-level-card {
   background: var(--bg-primary);
-  padding: 1.2rem;
+  padding: 1.1rem;
   border-radius: 10px;
   border: 1px solid var(--border-color);
   box-shadow: var(--shadow-sm);
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
   position: relative;
   transition: var(--transition);
 }
@@ -1410,7 +1433,7 @@ body::before {
 .timeline-dot {
   position: absolute;
   left: -2rem;
-  top: 18px;
+  top: 16px;
   width: 14px;
   height: 14px;
   border-radius: 50%;
@@ -1421,24 +1444,50 @@ body::before {
 .timeline-connector {
   position: absolute;
   left: -1.35rem;
-  top: 20px;
+  top: 18px;
   width: 1.35rem;
   height: 2px;
   background: var(--border-color);
 }
 
-/* ==== Related Courses Section ==== */
-.related-courses-section {
-  margin-top: 1rem;
-  padding-top: 2.5rem;
+/* Scroll indicator */
+.scroll-indicator {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 1.5rem 0 1rem;
+  cursor: pointer;
+  color: var(--accent-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  opacity: 0.7;
+  transition: var(--transition);
+}
+
+.scroll-indicator:hover {
+  opacity: 1;
+}
+
+.scroll-indicator span {
+  letter-spacing: 0.03em;
+}
+
+/* SECOND SCREEN: Related Courses */
+.skill-courses-screen {
+  min-height: 60vh;
+  padding: 3rem 2rem 4rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  scroll-snap-align: start;
   border-top: 1px solid var(--border-color);
 }
 
-.related-courses-section h2 {
-  position: relative;
+.skill-courses-inner {
+  width: 100%;
 }
 
-.related-courses-section .courses-grid {
+.skill-courses-screen .courses-grid {
   margin-top: 0.5rem;
 }
 
@@ -1453,7 +1502,7 @@ body::before {
 @media (max-width: 868px) {
   .skill-split-layout {
     grid-template-columns: 1fr;
-    gap: 2rem;
+    gap: 1.5rem;
   }
 
   .skill-split-left {
@@ -1463,5 +1512,14 @@ body::before {
 
   .roadmap-img-wrapper {
     padding: 0.5rem;
+  }
+
+  .skill-roadmap-screen {
+    min-height: auto;
+    padding: 1rem;
+  }
+
+  .skill-hero-header .course-hero-title {
+    font-size: 2rem;
   }
 }
